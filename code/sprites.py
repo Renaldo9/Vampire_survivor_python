@@ -36,8 +36,12 @@ class Gun(pygame.sprite.Sprite):
 
     def rotate_gun(self):
         angle = degrees(atan2(self.player_direction.x, self.player_direction.y)) - 90
-        self.image = pygame.transform.rotozoom(self.gun_surface, angle, 1)
-
+        if self.player_direction.x > 0:
+            self.image = pygame.transform.rotozoom(self.gun_surface, angle, 1)
+        else:
+            self.image = pygame.transform.rotozoom(self.gun_surface, abs(angle), 1)
+            self.image = pygame.transform.flip(self.image, False, True)
+            
     def update(self, _):
         self.get_direction()
         self.rotate_gun()
