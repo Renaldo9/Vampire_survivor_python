@@ -28,7 +28,7 @@ class Game:
 
         # Enemy timer
         self.enemy_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.enemy_event, 300)
+        pygame.time.set_timer(self.enemy_event, 1000)
         self.spawn_positions = []
         
         # setup
@@ -85,7 +85,16 @@ class Game:
             else:
                 self.spawn_positions.append((obj.x, obj.y))
                 
-          
+
+    def bullet_collision(self):
+        if self.bullet_sprites:
+            for bullet in self.bullet_sprites:
+                collision_sprites = pygame.sprite.spritecollide(bullet, self.enemy_sprites, False, pygame.sprite.collide_mask)
+                if collision_sprites:
+                    for sprite in collision_sprites:
+                        sprite.destroy()
+
+
     def run(self):
         while self.running:
             # dt
@@ -103,6 +112,7 @@ class Game:
             self.gun_timer()
             self.input()
             self.all_sprites.update(dt)
+            self.bullet_collision()
             
             # draw
             self.display_surface.fill('black')
